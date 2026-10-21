@@ -12,23 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""
-Tutorial 1: Basic Robot Demo
+"""Launch the static MJCF model generated from the car URDF.
 
-This tutorial demonstrates the simplest setup for using MuJoCo with ros2_control.
-It launches a two-link arm robot with position controllers using a pre-defined MJCF model.
+Generate the model once with:
 
-Key concepts:
-- Loading a pre-defined MJCF model from demo_resources/scenes/scene.xml
-- Basic ros2_control integration with MuJoCo
-- Position control of joints via position_controller
-
-Usage:
-    ros2 launch mujoco_ros2_control_demos 01_basic_robot.launch.py
-    ros2 launch mujoco_ros2_control_demos 01_basic_robot.launch.py headless:=true
-
-Control the robot:
-    ros2 topic pub /position_controller/commands std_msgs/msg/Float64MultiArray "data: [0.5, -0.5]"
+    ros2 run mujoco_ros2_control make_mjcf_from_robot_description.py \
+      --save_only \
+      --urdf mujoco_ros2_control_demos/demo_resources/car/urdf/car.urdf \
+      --output mujoco_ros2_control_demos/demo_resources/car/mjcf
 """
 
 import os
@@ -49,25 +40,22 @@ from launch_ros.substitutions import FindPackageShare
 def launch_setup(context, *args, **kwargs):
     pkg_share = FindPackageShare("mujoco_ros2_control_demos")
 
-    # Build robot description using the shared URDF
+    # Build robot description using the car URDF and the static MJCF path
     robot_description_content = Command(
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution([pkg_share, "demo_resources", "car", "urdf", "car.urdf"]),
-            " use_pid:=false",
             " headless:=",
             LaunchConfiguration("headless"),
-            " use_mjcf_from_topic:=false",
-            " use_transmissions:=false",
         ]
     )
 
     robot_description_str = robot_description_content.perform(context)
     robot_description = {"robot_description": ParameterValue(value=robot_description_str, value_type=str)}
 
-    parameters_file = PathJoinSubstitution([pkg_share, "config", "controllers.yaml"])
-    mujoco_plugins_file = PathJoinSubstitution([pkg_share, "config", "mujoco_ros2_control_plugins.yaml"])
+    parameters_file = PathJoinSubstitution([pkg_share, "config", "car_controllers.yaml"])
+    mujoco_plugins_file = PathJoinSubstitution([pkg_share, "config", "car_mujoco_plugins.yaml"])
 
     nodes = []
 
@@ -101,7 +89,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Controller spawners
-    controllers_to_spawn = ["joint_state_broadcaster", "position_controller", "gripper_controller", "pose_broadcaster"]
+    controllers_to_spawn = ["joint_state_broadcaster", "wheel_velocity_controller"]
     for controller in controllers_to_spawn:
         nodes.append(
             Node(

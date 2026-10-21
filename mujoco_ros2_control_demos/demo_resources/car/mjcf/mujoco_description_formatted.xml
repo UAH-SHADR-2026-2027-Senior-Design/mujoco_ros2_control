@@ -1,0 +1,58 @@
+<mujoco model="car">
+  <compiler angle="radian" meshdir="assets" texturedir="assets"/>
+  <asset>
+    <mesh name="Chassis" content_type="model/stl" file="full/Chassis.stl"/>
+    <mesh name="Wheel" content_type="model/stl" file="full/Wheel.stl"/>
+  </asset>
+  <worldbody>
+    <frame pos="-0.0064954 0.0104196 -0.00624545">
+      <body name="wheel_1" pos="-0.06 -0.075 0.0275" quat="9.38184e-07 0.707108 -9.38187e-07 0.707105">
+        <inertial pos="0 0 -0.0075" quat="0.5 0.5 -0.5 0.5" mass="3.56374e-05" diaginertia="1.34754e-08 7.40591e-09 7.40591e-09"/>
+        <joint name="revolute_1"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" mesh="Wheel" class="collision"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" rgba="0.615686 0.811765 0.929412 1" mesh="Wheel" class="visual"/>
+        <site name="wheel_1" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <body name="wheel_3" pos="-0.06 0.075 0.0275" quat="9.38184e-07 0.707108 -9.38187e-07 0.707105">
+        <inertial pos="0 0 -0.0075" quat="0.5 0.5 -0.5 0.5" mass="3.56374e-05" diaginertia="1.34754e-08 7.40591e-09 7.40591e-09"/>
+        <joint name="revolute_2"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" mesh="Wheel" class="collision"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" rgba="0.615686 0.811765 0.929412 1" mesh="Wheel" class="visual"/>
+        <site name="wheel_3" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <body name="wheel" pos="0.06 -0.075 0.0275" quat="9.38184e-07 0.707108 9.38187e-07 -0.707105">
+        <inertial pos="0 0 -0.0075" quat="0.5 0.5 -0.5 0.5" mass="3.56374e-05" diaginertia="1.34754e-08 7.40591e-09 7.40591e-09"/>
+        <joint name="revolute_3"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" mesh="Wheel" class="collision"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" rgba="0.615686 0.811765 0.929412 1" mesh="Wheel" class="visual"/>
+        <site name="wheel" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <body name="wheel_2" pos="0.06 0.075 0.0275" quat="9.38184e-07 0.707108 9.38187e-07 -0.707105">
+        <inertial pos="0 0 -0.0075" quat="0.5 0.5 -0.5 0.5" mass="3.56374e-05" diaginertia="1.34754e-08 7.40591e-09 7.40591e-09"/>
+        <joint name="revolute_4"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" mesh="Wheel" class="collision"/>
+        <geom pos="0 0 -0.0075" quat="1 0 0 0" type="mesh" rgba="0.615686 0.811765 0.929412 1" mesh="Wheel" class="visual"/>
+        <site name="wheel_2" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <geom quat="1 0 0 0" type="mesh" mesh="Chassis" class="collision"/>
+      <geom quat="1 0 0 0" type="mesh" rgba="0.615686 0.811765 0.929412 1" mesh="Chassis" class="visual"/>
+    </frame>
+    <site name="chassis" pos="-0.0064954 0.0104196 -0.00624545" quat="1.0 0 0 0"/>
+    <site name="root" pos="0 0 0" quat="1.0 0 0 0"/>
+  </worldbody>
+  <option integrator="implicitfast"/>
+  <default>
+    <default class="visual">
+      <geom contype="0" conaffinity="0" group="1"/>
+    </default>
+    <default class="collision">
+      <geom group="3"/>
+    </default>
+  </default>
+  <actuator>
+    <velocity name="revolute_1" joint="revolute_1" kv="1"/>
+    <velocity name="revolute_2" joint="revolute_2" kv="1"/>
+    <velocity name="revolute_3" joint="revolute_3" kv="1"/>
+    <velocity name="revolute_4" joint="revolute_4" kv="1"/>
+  </actuator>
+</mujoco>
