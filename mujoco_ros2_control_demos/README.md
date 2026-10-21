@@ -30,6 +30,28 @@ ros2 launch mujoco_ros2_control_demos 05_base_velocity_plugin.launch.py
 
 All tutorials support `headless:=true` to run without the MuJoCo viewer.
 
+## Car demo
+
+The car demo uses a static MJCF generated from its URDF. To regenerate the
+model after changing the URDF:
+
+```bash
+ros2 run mujoco_ros2_control make_mjcf_from_robot_description.py \
+  --save_only \
+  --urdf mujoco_ros2_control_demos/demo_resources/car/urdf/car.urdf \
+  --output mujoco_ros2_control_demos/demo_resources/car/mjcf
+```
+
+Then launch it with:
+
+```bash
+ros2 launch mujoco_ros2_control_demos car.launch.py
+```
+
+Wheel velocities can be commanded through
+`/wheel_velocity_controller/commands` using
+`std_msgs/msg/Float64MultiArray`.
+
 For the full list of launch arguments, features, controlling the robot, and package structure, see [`doc/tutorials.rst`](doc/tutorials.rst).
 
 ## See Also
